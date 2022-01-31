@@ -1,0 +1,1 @@
+from .currencies_list_colector import CurrenciesListColectorInterface
