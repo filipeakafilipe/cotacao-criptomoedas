@@ -17,7 +17,7 @@ class CurrencyRepository(CurrencyRepositoryInterface):
                 INSERT INTO currencies (exchange_id, currency)
                 VALUES (%s, %s);
             '''
-            cursor.execute(sql, currency)
+            cursor.executemany(sql, currency)
 
             db.commit()
         except:

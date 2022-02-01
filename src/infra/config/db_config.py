@@ -17,8 +17,7 @@ def create_tables():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS `smarttbot`.`currencies` (
-        `id` INT NOT NULL AUTO_INCREMENT,
         `exchange_id` INT NOT NULL UNIQUE,
         `currency` VARCHAR(20) NOT NULL UNIQUE,
-        PRIMARY KEY (`id`));
+        PRIMARY KEY (`exchange_id`));
     ''')

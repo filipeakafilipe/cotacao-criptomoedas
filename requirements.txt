@@ -1,3 +1,2 @@
 requests
-sqlaclhemy
 mysql-connector-python
