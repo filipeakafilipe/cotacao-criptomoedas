@@ -1,28 +1,24 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+import mysql.connector
 
-class DBConnectionHandler:
-    ''' SqlAlchemy database connection '''
+def get_connection():
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="123456",
+        database="smarttbot"
+    )
 
-    def __init__(self):
-        self.__connection_string = 'sqlite:///storage.db'
-        # self.__connection_string = 'mysql+mysqlconnector://root:123456@localhost:3306'
-        self.session = None
+    cursor = db.cursor()
+    
+    return db, cursor
 
-    def get_engine(self):
-        '''
-        Return connection Engine
-        :parram - None
-        :return - engine connection to Database
-        '''
-        engine = create_engine(self.__connection_string, echo = True)
-        return engine
+def create_tables():
+    _, cursor = get_connection()
 
-    def __enter__(self):
-        engine = create_engine(self.__connection_string)
-        session_maker = sessionmaker()
-        self.session = session_maker(bind = engine)
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.session.close()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS `smarttbot`.`currencies` (
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `exchange_id` INT NOT NULL UNIQUE,
+        `currency` VARCHAR(20) NOT NULL UNIQUE,
+        PRIMARY KEY (`id`));
+    ''')

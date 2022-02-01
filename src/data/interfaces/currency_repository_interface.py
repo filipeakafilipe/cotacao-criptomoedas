@@ -6,9 +6,5 @@ class CurrencyRepositoryInterface(ABC):
     ''' Interface to Pet Repository '''
 
     @abstractmethod
-    def insert_currency(self, exchange_id: int, currency: str) -> Currencies:
-        raise Exception("Method not implemented")
-
-    @abstractmethod
-    def get_currencies(self) -> List[Currencies]:
+    def insert_currency(self, currency) -> Currencies:
         raise Exception("Method not implemented")
