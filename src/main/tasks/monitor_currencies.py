@@ -2,7 +2,6 @@ from src.infra.repositories.currency_price_repository import CurrencyPriceReposi
 from src.main.composer.get_currencies import get_currencies_composer
 from src.domain.models.frequencies import get_frequencies
 import schedule
-import time
 from datetime import datetime
 
 class CurrenciesMonitoring:
@@ -15,10 +14,6 @@ class CurrenciesMonitoring:
 
     def start_monitoring_currencies(self):
         self.create_candles()
-        
-        # quotation = self.get_currencies_quotation()
-        # currency = self.get_currency_quotation(quotation, 121)
-
         self.monitor()
 
     def create_candles(self):
