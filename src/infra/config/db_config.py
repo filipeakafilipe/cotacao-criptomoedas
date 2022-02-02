@@ -1,6 +1,9 @@
 import mysql.connector
 
 def get_connection():
+    '''
+        Get Database connection
+    '''
     db = mysql.connector.connect(
         host="smarttbot-db-1",
         user="root",
@@ -13,6 +16,9 @@ def get_connection():
     return db, cursor
 
 def create_tables():
+    '''
+        Create Database tables
+    '''
     try:
         _, cursor = get_connection()
 

@@ -35,6 +35,9 @@ class CurrenciesListColector(CurrenciesListColectorInterface):
 
     @classmethod
     def __format_valid_currencies(cls, currency, currencies):
+        '''
+            Format valid currencies
+        '''
         currency_data = currencies[currency]
         
         return {

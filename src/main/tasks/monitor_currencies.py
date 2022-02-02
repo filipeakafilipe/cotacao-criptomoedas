@@ -13,6 +13,9 @@ class CurrenciesMonitoring:
         self.__currency_price_repository = CurrencyPriceRepository()
 
     def start_monitoring_currencies(self):
+        '''
+            Start currencies motiron method
+        '''
         self.create_candles()
         self.monitor()
 
@@ -24,6 +27,9 @@ class CurrenciesMonitoring:
             
     @classmethod
     def create_candle(cls, currency, frequency):
+        '''
+            Return a candlestick dict
+        '''
         return {
             'exchange_id': currency[0],
             'frequency': frequency,
@@ -35,6 +41,9 @@ class CurrenciesMonitoring:
         }
 
     def monitor(self):
+        '''
+            Task to monitor currencies quotation updates
+        '''
         schedule.every(1).seconds.do(self.get_currencies_quotation)
         schedule.every(1).seconds.do(self.update_candlesticks)
         schedule.every(60).seconds.do(self.save_candlesticks, frequency = 1)
@@ -45,12 +54,18 @@ class CurrenciesMonitoring:
             schedule.run_pending()
 
     def get_currencies_quotation(self):
+        '''
+            Get current currency quotation
+        '''
         controller = get_currencies_composer()
         response = controller.handler()['data']
         self.currencies_quotation = response
         print(f'Currencies Quotation: {self.currencies_quotation}')
 
     def update_candlesticks(self):
+        '''
+            Update candlesticks list
+        '''
         for candlestick in self.candlesticks:
             for quotation in self.currencies_quotation:
                 if candlestick['exchange_id'] == quotation['exchange_id']:
@@ -67,6 +82,9 @@ class CurrenciesMonitoring:
                         candlestick['close'] = quotation['last']
     
     def save_candlesticks(self, frequency):
+        '''
+            Save candlesticks into database
+        '''
         for candlestick in self.candlesticks:
             if candlestick['frequency'] == frequency:
                 candlestick['datetime'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -83,6 +101,9 @@ class CurrenciesMonitoring:
 
     @classmethod
     def convert_candlestick_to_tuple(cls, candlestick):
+        '''
+            Convert candlestick dict to tuple
+        '''
         return (
             candlestick['exchange_id'], 
             candlestick['frequency'], 
