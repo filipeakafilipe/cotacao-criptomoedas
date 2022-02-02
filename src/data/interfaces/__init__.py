@@ -1,1 +1,2 @@
 from .currency_repository_interface import CurrencyRepositoryInterface
+from .currencies_prices_repository_interface import CurrencyPriceRepositoryInterface
