@@ -1,0 +1,22 @@
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment: 
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=smarttbot
+    volumes: 
+      - ./init:/docker-entrypoint-initdb.d
+      - mysqlVolume:/var/lib/mysql
+      - mysqlConfig:/etc/mysql
+
+  python:
+    build:
+      context: .
+    restart: always
+    depends_on:
+      - db
+
+volumes: 
+    mysqlVolume:
+    mysqlConfig:

@@ -5,14 +5,14 @@ from src.infra.repositories.currency_repository import CurrencyRepository
 
 if __name__=="__main__":
     # response = None
-    # controller = get_currencies_composer()
+    controller = get_currencies_composer()
 
     try:
-        # create_tables()
-        # response = controller.handler()['data']
-        # currencies = [(currency_data['exchange_id'], currency_data['currency']) for currency_data in response]
+        create_tables()
+        response = controller.handler()['data']
+        currencies = [(currency_data['exchange_id'], currency_data['currency']) for currency_data in response]
+        currency_repository = CurrencyRepository()
+        currency_repository.insert_currency(currencies)
         monitor_currencies_composer()
-        # currency_repository = CurrencyRepository()
-        # currency_repository.insert_currency(currencies)
     except:
         pass
