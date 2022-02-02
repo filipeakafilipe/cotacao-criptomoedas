@@ -11,6 +11,7 @@ class CurrenciesMonitoring:
         self.currencies = currencies
         self.candlesticks = []
         self.currencies_quotation = None
+        self.__currency_price_repository = CurrencyPriceRepository()
 
     def start_monitoring_currencies(self):
         self.create_candles()
@@ -48,6 +49,12 @@ class CurrenciesMonitoring:
         while True:
             schedule.run_pending()
 
+    def get_currencies_quotation(self):
+        controller = get_currencies_composer()
+        response = controller.handler()['data']
+        self.currencies_quotation = response
+        print(f'Currencies Quotation: {self.currencies_quotation}')
+
     def update_candlesticks(self):
         for candlestick in self.candlesticks:
             for quotation in self.currencies_quotation:
@@ -68,22 +75,25 @@ class CurrenciesMonitoring:
         for candlestick in self.candlesticks:
             if candlestick['frequency'] == frequency:
                 candlestick['datetime'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                print(f'Salvar {candlestick}')
+
+                print(f'Candlestick: {candlestick}')
+
+                candlestick_converted = self.convert_candlestick_to_tuple(candlestick)
+                self.__currency_price_repository.insert_currency_price(candlestick_converted)
+
                 candlestick['open'] = None
                 candlestick['low'] = None
                 candlestick['high'] = None
                 candlestick['close'] = None
-                print(f'Resetado: {candlestick}')
-
-
-    def get_currencies_quotation(self):
-        controller = get_currencies_composer()
-        response = controller.handler()['data']
-        self.currencies_quotation = response
-        print(f'Currencies Quotation: {self.currencies_quotation}')
 
     @classmethod
-    def get_currency_quotation(cls, quotation, exchange_id):
-        for currency in quotation:
-            if currency['exchange_id'] == exchange_id:
-                return currency
+    def convert_candlestick_to_tuple(cls, candlestick):
+        return (
+            candlestick['exchange_id'], 
+            candlestick['frequency'], 
+            candlestick['datetime'],
+            float(candlestick['open']),
+            float(candlestick['low']),
+            float(candlestick['high']),
+            float(candlestick['close'])
+        )

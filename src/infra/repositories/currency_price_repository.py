@@ -13,9 +13,10 @@ class CurrencyPriceRepository(CurrencyPriceRepositoryInterface):
 
         try:
             sql = '''
-            
+                INSERT INTO currencies_prices (exchange_id, frequency, datetime, open, low, high, close)
+                VALUES (%s, %s, %s, %s, %s, %s, %s);
             '''
-            cursor.executemany(sql, currency_price)
+            cursor.execute(sql, currency_price)
 
             db.commit()
         except:

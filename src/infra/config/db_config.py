@@ -28,7 +28,7 @@ def create_tables():
             `id` INT NOT NULL AUTO_INCREMENT,
             `exchange_id` INT NOT NULL,
             `frequency` INT NOT NULL,
-            `datetime` INT NOT NULL,
+            `datetime` DATETIME NOT NULL,
             `open` FLOAT NOT NULL,
             `low` FLOAT NOT NULL,
             `high` FLOAT NOT NULL,
